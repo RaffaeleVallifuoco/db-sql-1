@@ -8,14 +8,14 @@ where date_of_birth between "1990-01-01" and "1990-12-31"
 order by date_of_birth asc;
 
 
-//Selezionare tutti i corsi che valgono più di 10 crediti (479)
+//Selezionare tutti i corsi che valgono pió di 10 crediti (479)
 
 select*
 from courses c 
 where cfu > "10";
 
 
-// Selezionare tutti gli studenti che hanno più di 30 anni 
+// Selezionare tutti gli studenti che hanno pió di 30 anni 
 
 SELECT *
 from students s 
@@ -48,7 +48,7 @@ from degrees d
 where `level` = 'magistrale' ;
 
 
-//Da quanti dipartimenti è composta l università? (12)
+//Da quanti dipartimenti ä composta l universitÖ? (12)
 
 SELECT *
 from departments d ;
@@ -59,5 +59,59 @@ from departments d ;
 SELECT *
 FROM teachers t 
 where phone IS NULL;
+
+
+
+// SECONDA PARTE
+
+
+
+
+//Contare quanti iscritti ci sono stati ogni anno
+
+SELECT year (s.enrolment_date) as enrolment_year, count(*)
+from students s
+group by enrolment_year
+ORDER by enrolment_year asc;
+
+
+//Contare gli insegnanti che hanno l ufficio nello stesso edificio
+
+SELECT t.office_address, COUNT(*) 
+FROM teachers t
+group by office_address ;
+
+
+//Calcolare la media dei voti di ogni appello d esame
+
+SELECT e.`date`,  e.id, AVG(es.vote) 
+from exams e 
+join exam_student es on e.id = es.exam_id 
+GROUP BY es.exam_id , e.id;
+
+
+// Contare quanti corsi di laurea ci sono per ogni dipartimento
+
+SELECT d.department_id , COUNT(*) 
+FROM degrees d 
+group by d.department_id ;
+
+
+//Selezionare tutti gli studenti iscritti al Corso di Laurea in Economia
+
+SELECT *
+FROM students s 
+join degrees deg on s.degree_id = deg.id 
+where deg.name like "%Economia%";
+
+
+// Selezionare tutti i corsi di laurea con i relativi corsi e insegnanti
+
+SELECT *
+FROM degrees deg 
+join courses c on deg.id = c.degree_id 
+join course_teacher ct on c.id = ct.course_id 
+join teachers t on ct.teacher_id = t.id;
+
 
 
